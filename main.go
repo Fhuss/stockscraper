@@ -43,7 +43,10 @@ func main() {
 	}
 	fmt.Println(res)
 }
-
+/*
+MarshalAndSave marshals the data into a json format and then saves it with a time stamp and date added.
+Returns a string message and an error message
+*/
 func MarshalAndSave(data interface{}) (string, error) {
 	date, time := GetDateAndTime()
 	str, err := json.MarshalIndent(&data, "", " ")
@@ -66,7 +69,10 @@ func MarshalAndSave(data interface{}) (string, error) {
 
 	return "Successfully saved json file!", nil
 }
-
+/*
+GetTickerSymbols retrieves the ticker symbols from the 100 "Most Active" stocks currently traded
+and returns a string array conatining those names
+*/
 func GetTickerSymbols(url, xpath string) ([]string, error) {
 	var tickerSymbols []string
 
@@ -87,7 +93,9 @@ func GetTickerSymbols(url, xpath string) ([]string, error) {
 	return tickerSymbols, nil
 
 }
-
+/*
+GetDateAndTime returns the date and time with a "yyyy-mm-dd", "hh:mm" format
+*/
 func GetDateAndTime() (string, string) {
 	t := time.Now()
 	return t.Format("2006-01-02"), t.Format("15:04")
