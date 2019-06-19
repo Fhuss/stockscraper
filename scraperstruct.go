@@ -6,11 +6,17 @@ import (
 	"github.com/antchfx/htmlquery"
 )
 
+/*
+Stocks is a struc containing an array of stock entries as well a stock market name.
+*/
 type Stocks struct {
 	Stockmarket string       //`json:stockmarket`
 	Entries     []StockEntry //`json:"stockentries"`
 }
 
+/*
+StockEntry is a struct containing a single entry
+*/
 type StockEntry struct {
 	Tickersymbol string  //`json:"tickersymbol,omitempty`
 	Sell         float64 //`json:"sell,omitempty"`
@@ -18,6 +24,10 @@ type StockEntry struct {
 
 }
 
+/*
+GetSell retrieves the current Sell value of a particular stock and assigns it to the correct struct.
+Returns an error message when called
+*/
 func (s *StockEntry) GetSell(url, buyxpath, sellxpath string) error {
 
 	rawhtml, err := htmlquery.LoadURL(url)
