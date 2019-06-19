@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"strconv"
 
 	"github.com/antchfx/htmlquery"
@@ -28,11 +29,11 @@ type StockEntry struct {
 GetSell retrieves the current Sell value of a particular stock and assigns it to the correct struct.
 Returns an error message when called
 */
-func (s *StockEntry) GetSell(url, buyxpath, sellxpath string) error {
+func (s *StockEntry) GetSell(url, sellxpath string) (string, error) {
 
 	rawhtml, err := htmlquery.LoadURL(url)
 	if err != nil {
-		return err
+		return "Cannot parse html", err
 	}
 	/*
 		buyidx := htmlquery.Find(rawhtml, buyxpath)
@@ -45,12 +46,16 @@ func (s *StockEntry) GetSell(url, buyxpath, sellxpath string) error {
 		s.buy = buy
 	*/
 	sellidx := htmlquery.Find(rawhtml, sellxpath)
+	if len(sellidx) == 0 {
+		return "lenght of html xpath is zero", errors.New("Index out of range")
+	}
 	sell, err := strconv.ParseFloat(htmlquery.InnerText(sellidx[0]), 64)
 	if err != nil {
-		return err
+		return "Cannot find xpath value", err
 	}
 	s.Sell = sell
 
-	return nil
+	return "Successfully assigned stockEntry values", nil
 
 }
+
